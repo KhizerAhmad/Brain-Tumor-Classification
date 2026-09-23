@@ -240,7 +240,7 @@ output = Dense(4, activation='softmax')(x)
 resnet_model = Model(inputs=base_model.input, outputs=output)
 
 resnet_model.compile(
-    optimizer='adam',
+    optimizer=tf.keras.optimizers.Adam(learning_rate=1e-5),
     loss='categorical_crossentropy',
     metrics=['accuracy']
 )
