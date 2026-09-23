@@ -1,6 +1,6 @@
 # Brain Tumor Classification 🧠
 
-A machine learning project that classifies brain tumor types from MRI images using Python. Covers the full ML pipeline — image preprocessing, exploratory data analysis (EDA), training multiple models, and evaluating them with proper metrics and visualizations.
+A machine learning project that classifies brain tumor types from MRI images using Python. Compares **6 models** — 4 classical ML algorithms and 2 deep learning models (CNN and ResNet50) — with CNN achieving the best accuracy of **89.8%**.
 
 ---
 
@@ -8,36 +8,46 @@ A machine learning project that classifies brain tumor types from MRI images usi
 
 - Loads and preprocesses MRI brain scan images
 - Performs EDA to understand the dataset — class distribution, image samples, pixel statistics
-- Trains and compares 4 ML classification models
-- Evaluates each model with accuracy scores, classification reports, and confusion matrices
+- Trains and compares 6 models across classical ML and deep learning
+- Evaluates each model with accuracy scores, confusion matrices, and a full model comparison chart
 - Saves all graphs and visualizations to the `Graphs/` folder
 
 ---
 
 ## Tumor Classes
 
-The dataset classifies MRI images into tumor types:
-- **Glioma**
-- **Meningioma**
-- **Pituitary Tumor**
-- **No Tumor**
+| Label | Class |
+|-------|-------|
+| 0 | Glioma |
+| 1 | Meningioma |
+| 2 | Pituitary Tumor |
+| 3 | No Tumor |
 
 ---
 
-## Models Compared
+## Models & Results
 
-| Model | Notes |
-|-------|-------|
-| Logistic Regression | Linear baseline classifier |
-| Decision Tree | Tree-based, interpretable model |
-| Random Forest | Ensemble of decision trees |
-| Support Vector Machine (SVM) | High-dimensional image classification |
+### Classical ML (blue)
+| Model | Accuracy |
+|-------|----------|
+| Logistic Regression | 81.2% |
+| Decision Tree | 78.4% |
+| Random Forest | 89.1% |
+| SVM | 82.9% |
+
+### Deep Learning (orange)
+| Model | Accuracy |
+|-------|----------|
+| CNN (custom) | **89.8% ✅ Best** |
+| ResNet50 (transfer learning) | 81.1% |
+
+> CNN edges out Random Forest by 0.7% and outperforms ResNet50 — showing that a well-tuned custom CNN can beat a heavyweight pretrained model on this dataset.
 
 ---
 
 ## Why I built this
 
-Medical image classification is one of the most impactful real-world applications of ML. Wanted to work with actual image data (not just tabular CSVs), go through a proper preprocessing pipeline, and compare how classical ML algorithms handle a multi-class classification problem on image features.
+Medical image classification is one of the most impactful real-world applications of ML. Wanted to go beyond classical algorithms and compare them directly against deep learning approaches on the same dataset. The result was interesting — a custom CNN outperformed ResNet50 (transfer learning), which shows that pretrained models don't always win on domain-specific medical data.
 
 ---
 
@@ -46,11 +56,12 @@ Medical image classification is one of the most impactful real-world application
 | Library | Usage |
 |---------|-------|
 | Python | Core language |
-| scikit-learn | ML models, metrics, train/test split |
+| scikit-learn | Classical ML models, metrics, train/test split |
+| TensorFlow / Keras | CNN and ResNet50 deep learning models |
 | NumPy | Array operations and image data handling |
-| matplotlib | Visualizations, confusion matrices, EDA plots |
+| matplotlib | Confusion matrices, accuracy comparison chart, EDA plots |
 | OpenCV / PIL | Image loading and preprocessing |
-| UV | Package manager (`uv.lock` for dependency locking) |
+| UV | Package manager (`uv.lock` for reproducible installs) |
 
 ---
 
@@ -69,7 +80,7 @@ With pip:
 pip install -r requirements.txt
 ```
 
-Or with UV (faster):
+Or with UV:
 ```bash
 uv sync
 ```
@@ -90,11 +101,14 @@ python main.py
 ```
 Brain-Tumor-Classification/
 │
-├── main.py              # Full ML pipeline — preprocessing, EDA, training, evaluation
-├── Graphs/              # Generated plots and confusion matrices
-├── requirements.txt     # pip dependencies
-├── pyproject.toml       # Project metadata
-├── uv.lock              # UV lockfile for reproducible installs
+├── main.py              # Full pipeline — preprocessing, EDA, training, evaluation
+├── Graphs/
+│   ├── CNN_CM.png                   # CNN confusion matrix
+│   ├── ResNet50_CM.png              # ResNet50 confusion matrix
+│   └── All_AI_Models_Accuracy.png  # Full model comparison chart
+├── requirements.txt
+├── pyproject.toml
+├── uv.lock
 └── .gitignore
 ```
 
@@ -103,12 +117,17 @@ Brain-Tumor-Classification/
 ## Pipeline Overview
 
 ```
-MRI Images → Preprocessing → Feature Extraction → Train/Test Split
-     → Logistic Regression  ┐
-     → Decision Tree        ├─ Evaluate → Confusion Matrix + Accuracy
-     → Random Forest        │
-     → SVM                  ┘
-          → Compare Results → Save Graphs
+MRI Images → Preprocessing → EDA
+     │
+     ├── Classical ML ──→ Logistic Regression
+     │                ──→ Decision Tree
+     │                ──→ Random Forest
+     │                ──→ SVM
+     │
+     └── Deep Learning ─→ Custom CNN         ← Best (89.8%)
+                       ─→ ResNet50 (Transfer Learning)
+     │
+     └── Evaluate all → Confusion Matrices + Accuracy Chart → Graphs/
 ```
 
 ---
@@ -116,27 +135,29 @@ MRI Images → Preprocessing → Feature Extraction → Train/Test Split
 ## Evaluation Metrics
 
 - Accuracy score per model
-- Classification report (precision, recall, F1 per class)
-- Confusion matrix heatmaps saved to `Graphs/`
+- Confusion matrix heatmaps per model
+- Side-by-side all-models accuracy comparison bar chart
 
 ---
 
-## Sample Results
+## Results Graphs
 
-> *(Add your accuracy scores per model here once you run it)*
+**All Models Accuracy Comparison**
 
----
+![All Models Accuracy](Graphs/All_AI_Models_Accuracy.png)
 
-## Screenshots
+**CNN Confusion Matrix**
 
-<img width="798" height="563" alt="Class Distribution" src="https://github.com/user-attachments/assets/4aad7d6f-ce80-4dae-bce6-747e4d796933" />
-<img width="797" height="570" alt="Accuracy Graph" src="https://github.com/user-attachments/assets/68fa1248-207d-451d-a4a9-edff4428d957" />
+![CNN Confusion Matrix](Graphs/CNN_CM.png)
 
+**ResNet50 Confusion Matrix**
+
+![ResNet50 Confusion Matrix](Graphs/ResNet50_CM.png)
 
 ---
 
 ## Author
 
-**Khizer Ahmad** — built this to get hands-on with medical image classification, multi-class ML evaluation, and working through a real-world end-to-end ML pipeline.
+**Khizer Ahmad** — built this as part of my Research Assistant work at the University of Lahore, extending a classical ML classification project with deep learning models to compare approaches on real medical imaging data.
 
-Feel free to fork it and try adding a CNN for better accuracy on image data.
+Feel free to fork it and try adding more augmentation or fine-tuning ResNet50 further.
